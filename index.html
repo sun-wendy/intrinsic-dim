@@ -25,7 +25,6 @@
 
 
   <title>Representation Geometry of Image Models</title>
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
   rel="stylesheet">
 
@@ -43,6 +42,17 @@
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX", "output/HTML-CSS"],
+      extensions: ["tex2jax.js"],
+      "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] },
+      tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+      TeX: { noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+      messageStyle: "none"
+    });
+    </script>    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
 </head>
 <body>
 
@@ -72,7 +82,7 @@
                     <div class="publication-links">
                   <!-- Github link -->
                   <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
+                    <a href="https://github.com/sun-wendy/intrinsic-dim" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
@@ -92,27 +102,8 @@
 
 
 
-<!-- Paper abstract -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End paper abstract -->
-
-
-
 <!-- Introduction -->
-<section class="hero is-small">
+<section class="section hero is-light">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
@@ -120,9 +111,11 @@
           <h2 class="title is-3">Introduction</h2>
             <div class="content has-text-justified">
               <p>
-                Our research explores the geometric properties of features learned by image models. 
-                Through activation visualization and analysis of key metrics, particularly the intrinsic dimensionality of feature spaces, we seek to understand the structure of feature manifolds and their interrelationships. 
-                This investigation aims to illuminate how neural networks represent and transform visual information across their layers.
+                Our research explores the geometric properties of features learned by image models. Through the intrinsic dimensionality of feature spaces, we seek to understand the structure of feature manifolds and their interrelationships. This investigation aims to illuminate how neural networks represent and transform visual information across their layers.
+              </p>
+              <p>
+                The <i>manifold hypothesis</i> asserts that even though real world data may be naturally presented in a high dimensional space, they actually require way fewer variables to describe. For example, a $224\times 224$ image with 3 channels lies in a space of dimension $3\cdot 224\cdot 224 = 150528$, but the subset of images that can plausibly occur in the real world lies on or close to a submanifold of a much smaller dimension. This is considered as one of the key traits of real world data which enable modern deep models to generalize well. Thus, for a given point cloud, its <i>intrinsic dimension</i> (ID) is loosely defined as the minimum number of variables needed to describe it, or in other words the dimension of the submanifold which they lie on. 
+              </p>
             </div>
         </div>
       </div>
@@ -131,10 +124,10 @@
 </section>
 <!-- Introduction -->
 
-
+<br><br><br>
 
 <!-- Rleated Work -->
-<section class="hero is-small is-light">
+<section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
@@ -151,85 +144,133 @@
 </section>
 <!-- Related Work -->
 
+<br><br><br>
 
-
-<!-- Methodology -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h2 class="title is-3">Methodology</h2>
-            <div class="content has-text-justified">
-              <p>
-                
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Methodology -->
-
-
-
-<!-- Toy example -->
+<!-- Intrinsic Dimension Estimation -->
 <section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Toy Example</h2>
+          <h2 class="title is-3">Intrinsic Dimension Estimation</h2>
             <div class="content has-text-justified">
               <p>
-                [Wendy will add]
+                
             </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- Toy example -->
+<!-- Intrinsic Dimension Estimation -->
 
+<br><br>
 
-
-<!-- Varying dimension -->
+<!-- Toy Dataset -->
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Varying Dimension (placeholder title)</h2>
+          <h2 class="title is-3">Toy Dataset: Shape, Color, & Location</h2>
+            <br>
             <div class="content has-text-justified">
+              <h4 class="title is-4">Dataset</h4>
               <p>
-                
+                To investigate the use of intrinsic dimension on machine learning tasks, we start with the following toy dataset from Problem Set 4: as illustrated in <a href="#dataset-vis">Figure 1</a>, the dataset consists of images of one single object in the black background. The object has various colors, shape, and appears at different locations in the image. 
+                <br><br>
+                <img src="static/images/dataset_vis.png" alt="Dataset Visualization" style="max-width:100%;" id="dataset-vis">
+                <p style="text-align: center;"><em>Figure 1: Visualization of toy dataset.</em></p>
+              </p>
+              <br><br>
+
+              <h4 class="title is-4">Autoencoder for Reconstruction</h4>
+              <p>
+                To get a representation for images in this dataset, we train an autoencoder for reconstruction. More specifically, we design the encoder $f$ and decoder $g$ to be $6$-layer CNNs and minimize the reconstruction loss:
+                $$L(x) \, = \, \| x - g(f(x)) \|_{\, 2}^{\, 2}$$
+              </p>
+              <p>
+                After the model achieves near-perfectly performance, we take $f(x)$ to be the learned representation of image $x$, since from it the decoder reliably reconstructs $x$.
+                When we set the dimensionality of representation to be $64$, we use the <tt>CorrInt</tt> metric to get the intrinsic dimension $~4$. As a baseline, we compute the actual dimension of $7.5$. In the next section we will learn that the estimation of $4$ is more accurate than $7.5$.
+              </p>
+              <br><br>
+
+              <h4 class="title is-4">Varying Dimension</h4>
+              <p>
+                Since the representation learned is sometimes correlated with its dimensionality, we train the autoencoder on varying dimensions and compute their intrinsic dimensions over different metrics, as shown in <a href="#varying-dim">Figure 2</a>.
+                <br><br>
+                <div class="columns is-centered" id="varying-dim">
+                  <div class="column is-half">
+                    <img src="static/images/vary_dim.png" alt="Varying Dimensions Plot" style="width:100%;">
+                  </div>
+                  <div class="column is-half">
+                    <img src="static/images/perf_dim.png" alt="Performance vs Dimensions Plot" style="width:100%;">
+                  </div>
+                </div>
+                <p style="text-align: center;"><em>Figure 2: Intrinsic dimension computed for varying dimension.</em></p>
+                <br>
+                <p>
+                  We can see that as the model performance convergence, so does intrinsic dimension but not for actual dimension. This again illustrates that intrinsic dimension helps when it comes to understanding the geometry of representation.
+                </p>
+              </p>
             </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- Varying dimension -->
+<!-- Toy Dataset -->
 
+<br><br>
 
-
-<!-- MAE -->
+<!-- Toy Dataset: Representation Decomposition -->
 <section class="hero is-small is-light">
+  <br><br>
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">MAE (placeholder title)</h2>
+          <h2 class="title is-3">Toy Dataset: Representation Decomposition</h2>
+          <br>
             <div class="content has-text-justified">
               <p>
-                
+                In the toy dataset above , the color, shape and location attributes can be independent of each other, so we hypothesize that the representation of images in the dataset dedicates different dimensions to these three attributes. As we hypothesized that a harder concept (such as shape) has a higher intrinsic dimension than an easier concept (such as color or location), we decomposed the representation for the shape, color, and location properties and estimated their respective intrinsic dimensions. We found that the shape property does have a higher intrinsic dimension based on our metrics.
+              </p>
+              <br><br>
+              
+              <h4 class="title is-4">Dataset Augmentation</h4>
+              <p>
+                We augmented the original dataset and constructed a custom contrastive learning dataset for each property (shape, color, and location). For each property, we generated 5,000 positive pairs and 5,000 pairs, where a positive pair shares the target property but has different values for other properties, and a negative pair differs only in the target property and shares other properties. For example, Figure [] below shows a positive pair and a negative pair for the location property. 
+              </p>
+              <br>
+              <div class="columns is-centered">
+                <div class="column is-half">
+                  <img src="static/images/location_positive_pair.png" alt="Location Positive Pair" style="width:100%;">
+                </div>
+                <div class="column is-half">
+                  <img src="static/images/location_negative_pair.png" alt="Location Negative Pair" style="width:100%;">
+                </div>
+              </div>
+              <p style="text-align: center;"><em>Figure 3: Example of positive pair (left) & negative pair (right) for location property.</em></p>
+              <br><br>
+
+              <h4 class="title is-4">Experiment Setup</h4>
+              <p>
+                For each property (shape, color, and location), we trained an encoder with <tt>latent_dim</tt> = 128 on its contrastive learning dataset. The contrastive loss we used is:
+                $$L \left(x_{1}, x_{2}, y\right) \, = \, y \cdot D^{2} \, + \, (1-y) \cdot \max{(\texttt{margin} - D, \, 0)}^{2},$$
+                where $x_{1}, \, x_{2}$ are the two images in a pair, $y = 1$ if it is a positive pair and $0$ otherwise, $D = \| f\left(x_{1}\right) - f\left(x_{2}\right) \|_{\, 2}$ is the Euclidean distance between the embeddings of $x_{1}$ and $x_{2}$, and <tt>margin</tt> is a hyperparameter that indicates the minimum distance we want a negative pair to have. Conceptually, if a pair is positive, we want their embeddings to be close and so penalize their distance; if a pair is negative, we want their embeddings to be far apart and so penalize if they are closer than <tt>margin</tt>.
+              </p>
+              <p>
+                We trained the encoder until its loss plateaus, i.e., until its representation stabilizes — empirically, the encoder for the shape property was trained for $20$ epochs, that for the color property was trained for $15$ epochs, and that for the location property was trained for $30$ epochs.
+              </p>
             </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- MAE -->
+<!-- Toy Dataset: Representation Decomposition -->
+
 
 
 
