@@ -401,6 +401,8 @@
               <p>
                 In this section, we test the invariance property of ID on machine learning tasks. We experiment on a toy dataset and train an autoencoder for reconstruction. We then vary the latent dimension and compute the ID over different metrics.
               </p>
+              <br><br>
+
               <h4 class="title is-4">Toy Dataset</h4>
               <p>
                 We borrow the toy dataset from Problem Set 4: as illustrated in <a href="#dataset-vis">Figure 3</a>, the dataset consists of images of one single object in the black background. The object has various colors, shape, and appears at different locations in the image. We choose the dataset because it is simple and allows us to speculate the intrinsic dimensionality of the data manifold: assumpting that the color, shape, and location attributes are independent of each other, we hypothesize that the representation of images in the dataset dedicates different dimensions to these three attributes. We will further test this hypothesis in the next section.
@@ -533,7 +535,7 @@
                 </table>
                 <p style="text-align: center;"><em>Table 3: ID estimates for shape, color, & location using various metrics.</em></p>
                 <br>
-                We observe that the PCA metric assigns a high ID to each property, which is expected as PCA is not a good estimator for nonlinearly embedded manifolds. On the other hand, CorrInt and TwoNN metrics assign a lower ID to each property, with CorrInt especially close to our hypothese (2.37 + 0.86 + 1.50 = 4.73 ~ 4, as computed in the previous section). This verifies the additivity property of ID.
+                We observe that the PCA metric assigns a high ID to each property, which is expected as PCA is not a good estimator for nonlinearly embedded manifolds. On the other hand, CorrInt and TwoNN metrics assign a lower ID to each property, with CorrInt especially close to our hypothese (2.37 + 0.86 + 1.50 = 4.73 ~ 4, as computed in the previous section). This supports the additivity property of ID.
               </p>
               <br><br>
             </div>
@@ -554,9 +556,10 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <h2 class="title is-3">Property 3: Semanticity</h2>
+            <br>
             <div class="content has-text-justified">
               <p>
-                In <a href="#kaiming">Kaiming He et al.</a>, the authors introduced masked autoencoder (MAE), which consists of a vision transformer (ViT) encoder, a linear projection layer, then a decoder. The encoder takes an input image and cuts it into $16\times 16$ non-overlapping patches, and embeds each of the batches separately but with attention. The MAE is trained by masking some of these patches and asking the decoder to recover the hidden patches. Therefore, the individual patch embeddings would need to contain information about the whole image.
+                In <a href="#kaiming">He et al.</a>, the authors introduced masked autoencoder (MAE), which consists of a vision transformer (ViT) encoder, a linear projection layer, then a decoder. The encoder takes an input image and cuts it into $16\times 16$ non-overlapping patches, and embeds each of the batches separately but with attention. The MAE is trained by masking some of these patches and asking the decoder to recover the hidden patches. Therefore, the individual patch embeddings would need to contain information about the whole image.
               </p>
               <p>
                 In this section, we test the semanticity hypothesis with the following experimental setup using a pretrained MAE. We pass in images from the Imagenette dataset, which just consists of 10 distinct classes of Imagenet. For a given class, we take the latent representations of each patch of each image right after the linear projection layer. We vary three paramaters: the image class, the masking ratio, and whether or not the image is shuffled. By shuffling, we mean the process of randomly permuting the relative locations of each patch in a given image. This process should reduce the semantic complexity of the image while maintaining its formal complexity. Therefore, if the semanticity assumption were true, then the ID of shuffled images should be lower than that of unshuffled images, while the linear dimension should remain roughly the same; similarly, the ID of images with higher masked percentage should be lower than that of lower masked percentage, and the linear dimension should also be lower.
@@ -566,6 +569,7 @@
       </div>
     </div>
   </div>
+  <br><br>
 </section>
 <!-- Semanticity -->
 
