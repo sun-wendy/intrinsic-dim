@@ -70,9 +70,9 @@
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
               <span class="author-block">
-                Delores (Xiaoman) Ding<sup>*</sup>,</span>
+                Atticus (Zifan) Wang<sup>*</sup>,</span>
                 <span class="author-block">
-                  Atticus (Zifan) Wang<sup>*</sup>,</span>
+                  Delores (Xiaoman) Ding<sup>*</sup>,</span>
                   <span class="author-block">
                     Qinyi (Wendy) Sun<sup>*</sup> </span>
                   </div>
@@ -139,13 +139,13 @@
             <br>
             <div class="content has-text-justified">
               <p>
-                The \emph{manifold hypothesis} asserts that even though real world data may be naturally presented in a high dimensional space, they actually require way fewer variables to describe. For example, a $224\times 224$ image with 3 channels lies in an affine space of dimension $3\cdot 224\cdot 224 = 150528$, but the subset of images that can plausibly occur in the real world lies on or close to a submanifold of a much smaller dimension. 
+                The <i>manifold hypothesis</i> asserts that even though real world data may be naturally presented in a high dimensional space, they actually require way fewer variables to describe. For example, a $224\times 224$ image with 3 channels lies in an affine space of dimension $3\cdot 224\cdot 224 = 150528$, but the subset of images that can plausibly occur in the real world lies on or is close to a submanifold of a much smaller dimension. 
               </p>
               <p>
-                This hypothesis is considered as one of the key traits of real world data which enable modern deep models to generalize well. A neural network can be viewed as a sequence of transformations between affine spaces, which take the raw distribution of data and encode it into a series of latent representations that lie in lower-dimensional spaces and are (hopefully) more structured. The model then performs downstream tasks like classification or prediction by using these latent representations. Thus, understanding the structure of these latent representations could help us understand and steer the model's behavior. 
+                This hypothesis is considered as one of the key traits of real-world data which enable modern deep models to generalize well. A neural network can be viewed as a sequence of transformations between affine spaces, which take the raw distribution of data and encode it into a series of latent representations that lie in lower-dimensional spaces and are (hopefully) more structured. The model then performs downstream tasks like classification or prediction by using these latent representations. Thus, understanding the structure of these latent representations could help us understand and steer the model's behavior. 
               </p>
               <p>
-                We'll refer to a collection of vectors in a fixed space as a \emph{point cloud}. On a given input dataset, the activations of some neural network layer is a point cloud, which should lie on or close to some low-dimensional manifold according to the manifold hypothesis. For a given point cloud, its \emph{intrinsic dimension} (ID) is loosely defined as the minimum number of variables needed to describe it, or in other words the dimension of the submanifold which they lie on. 
+                We'll refer to a collection of vectors in a fixed space as a <i>point cloud</i>. On a given input dataset, the activations of some neural network layer is a point cloud, which should lie on or be close to some low-dimensional manifold according to the manifold hypothesis. For a given point cloud, its <i>intrinsic dimension</i> (ID) is loosely defined as the minimum number of variables needed to describe it, or in other words the dimension of the submanifold which they lie on. 
               </p>
               <p>
                 However, because real world data is often noisy, estimating its ID is not an obvious task. It is even unclear how to rigorously define it. One of the goals of our work is to compare some popular approaches in ID estimation, and see whether or not they satisfy the expected properties which ID should satisfy. In particular, there are three properties that we would like ID to satisfy:
@@ -160,13 +160,14 @@
                 along those subspaces should sum to the ID of the full manifold.</li>
                 
                 <li><strong>Semanticity:</strong> The ID of the data manifold should encode the amount
-                of semantic complexity of the data. (See section 2 for more discussion.)</li>
+                of semantic complexity of the data (see Section 2 for more discussion).</li>
               </ol>
+              <br>
               <p>
                 Our experiments test these properties on image models for different ID estimation methods. We show in particular that the notion of <em>correlation dimension</em> captures phenomenon (3) better than other measurements of ID.
               </p>
               <p>
-                This article is organized as follows: In section 2, we review some previous work related to the intrinsic dimension of latent representations. In section 3, we compare some common methods for ID estimation on some benchmark datasets with known ground-truth ID. In section 4--6 we respectively test properties (1)--(3). Sections 4 and 5 use autoencoders trained on a toy image dataset consisting of images of one single object with varying colors, shapes, and locations, while section 6 uses a pretrained masked autoencoder on the Imagenette dataset.
+                This article is organized as follows: In Section 2, we review some previous work related to the ID of latent representations. In Section 3, we compare some common methods for ID estimation on some benchmark datasets with known ground-truth ID. In Sections 4 - 6, we respectively test properties (1) - (3). Sections 4 and 5 use autoencoders trained on a toy image dataset consisting of images of one single object with varying shapes, colors, and locations, while Section 6 uses a pretrained masked autoencoder on the Imagenette dataset.
               </p>
             </div>
         </div>
@@ -189,64 +190,72 @@
             <br>
             <div class="content has-text-justified">
               <p>
-                There has been a lot of established work providing evidence for the manifold hypothesis for images (e.g.~\cite{Carlsson}\cite{fefferman2013} and see references in \cite{pope2021}) and we will not focus on them. Rather, we will briefly discuss two recent works in the context of representation geometry of deep neural networks.
+                There has been a lot of established work providing evidence for the manifold hypothesis for images (e.g. <a href="#carlsson">Carlsson et al.</a>, <a href="#fefferman">Fefferman et al.</a>, and see references in <a href="#pope">Pope et al.</a>) and we will not focus on them. Rather, we will briefly discuss two recent works in the context of representation geometry of deep neural networks.
               </p>
               <p>
-                In \cite{pope2021}, Pope et.~al. measured the ID of popular datasets such as CIFAR-10 and Imagenet. They found the ID of these datasets to be on the order of $10^1$, for example Imagenet has ID around 40, confirming the manifold hypothesis. Their methods used the Maximum Likelihood Estimate (MLE) method, which is described in their section 3. Their choice to use MLE instead of other ID estimation methods was based on some experiments on data sampled from hypercubes, data from the \texttt{basenji10} dataset, as well as real-world data from MNIST and CIFAR-10. However, we note that their MLE estimates depend strongly on the neighborhood parameter $k$, see Figure 1 of \cite{pope2021}.
+                In <a href="#pope">Pope et al.</a>, Pope et.~al. measured the ID of popular datasets such as CIFAR-10 and ImageNet. They found the ID of these datasets to be on the order of $10^1$ — for example ImageNet has ID around 40, confirming the manifold hypothesis. Their methods used the Maximum Likelihood Estimate (MLE) method, which is described in their Section 3. Their choice to use MLE instead of other ID estimation methods was based on some experiments on data sampled from hypercubes, data from the <tt>basenji10</tt> dataset, as well as real-world data from MNIST and CIFAR-10. However, we note that their MLE estimates depend strongly on the neighborhood parameter $k$ (see Figure 1 of <a href="#pope">Pope et al.</a>).
               </p>
               <p>
-                Another finding by \cite{pope2021} is that the higher the ID of a dataset is, the more examples are needed for the model to learn it. In section 5, we present some further evidence for the hypothesis that concepts with higher ID are harder to learn. We remark that \cite{pope2021} also noted that this trend is not true with ID replaced by the latent dimension, which is evidence for property (1) (invariance).
+                Another finding by <a href="#pope">Pope et al.</a> is that the higher the ID of a dataset is, the more examples are needed for the model to learn it. In Section 5, we present some further evidence for the hypothesis that concepts with higher ID are harder to learn. We remark that <a href="#pope">Pope et al.</a> also noted that this trend is not true with ID replaced by the latent dimension, which is evidence for property (1), i.e., invariance.
               </p>
               <p>
-                The other previous work which we highlight is \cite{lee2024}, which studies language instead of images. One of their main claims is that the ID of the representations of a language dataset captures its semantic content, while the linear dimension (smallest linear subspace containing the data) captures its formal content. To validate this claim, they took a set of sentences they constructed, and then shuffled the word orders of those sentences in a controlled way. They found that after shuffling the words, the linear dimension increased slightly, while the ID decreased drastically. This is evidence for property (3) (semanticity), and we will test this hypothesis on images. 
+                The other previous work which we highlight is <a href="#lee">Lee et al.</a>, which studies language instead of images. One of their main claims is that the ID of the representations of a language dataset captures its semantic content, while the linear dimension (smallest linear subspace containing the data) captures its formal content. To validate this claim, they took a set of sentences they constructed, and then shuffled the word orders of those sentences in a controlled way. They found that after shuffling the words, the linear dimension increased slightly, while the ID decreased drastically. This is evidence for property (3), i.e., semanticity, and we will test this hypothesis on images in Section 6. 
               </p>
             </div>
         </div>
       </div>
     </div>
   </div>
-  <br><br>
+  <br><br><br>
 </section>
 <!-- Related Work -->
 
-<br><br><br>
+
 
 <!-- Intrinsic Dimension Estimation -->
 <section class="hero is-small">
+  <br><br>
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <h2 class="title is-3">Intrinsic Dimension Estimation</h2>
+            <br>
             <div class="content has-text-justified">
               <p>
-                In this section, we first describe some common methods used to estimate the intrinsic dimension of data, and then compare their accuracy on some benchmark datasets with known intrinsic dimensionality.  We used implementations of these methods in the library \texttt{scikit-dimension}.
+                In this section, we first describe some common methods used to estimate the ID of data, and then compare their accuracy on some benchmark datasets with known intrinsic dimensionality.  We used implementations of these methods in the library <tt>scikit-dimension</tt>.
               </p>
+              <br><br>
+
               <h4 class="title is-4">PCA</h4>
               <p>
-                Principal component analysis (PCA) is one of the most well-known methods in data analysis. Roughly speaking, it finds the direction in which the data has the most variance, then subtracts it from the data and repeats the procedure. Mathematically, it finds the eigenvalues of the covariance matrix of the data and lists them in descending order, and the dimensionality of the data is estimated by looking at the number of eigenvalues that exceed a certain threshold, for example 0.05 times the maximal eigenvalue. Alternatively, one could look at the minimum number of directions needed to explain a certain percentage of the total variance, e.g.~99\%.
+                Principal component analysis (PCA) is one of the most well-known methods in data analysis. Roughly speaking, it finds the direction in which the data has the most variance, then subtracts it from the data, and repeats the procedure. Mathematically, it finds the eigenvalues of the covariance matrix of the data and lists them in descending order, and the dimensionality of the data is estimated by looking at the number of eigenvalues that exceed a certain threshold (for example, 0.05 times the maximal eigenvalue). Alternatively, one could look at the minimum number of directions needed to explain a certain percentage of the total variance (e.g. 99%).
               </p>
               <p>
-                One can apply PCA to the full point cloud, but this is not a good way to estimate the intrinsic data dimension when the data manifold is nonlinearly embedded. Instead, one could apply PCA to local neighborhoods of each point, and take their mean; this would give a better estimate of ID because locally the manifold looks like it is linearly embedded. 
+                One can apply PCA to the full point cloud, but this is not a good way to estimate the intrinsic data dimension when the data manifold is nonlinearly embedded. Instead, one could apply PCA to local neighborhoods of each point, and take their mean; this would give a better estimate of ID, because locally the manifold looks like it is linearly embedded. 
               </p>
+              <br><br>
 
               <h4 class="title is-4">Correlation Dimension (CorrInt)</h4>
               <p>
-                Correlation dimension is a type of fractal dimension based on the following intuition: the higher the dimension of a dataset, the more quickly the number of neighbors which are at most $\epsilon$-distance from a given point can grow as a power of $\epsilon$. For the precise definition, see \cite{Gra1983}.
+                Correlation dimension is a type of fractal dimension based on the following intuition: the higher the dimension of a dataset, the more quickly the number of neighbors which are at most $\epsilon$-distance from a given point can grow as a power of $\epsilon$. For the precise definition, see <a href="#grassberger">Grassberger and Procaccia</a>.
               </p>
+              <br><br>
 
               <h4 class="title is-4">Two Nearest Neighbors (TwoNN)</h4>
               <p>
-                The TwoNN estimation \cite{Facco17} uses less neighborhood structure than all of the methods above; it only looks at the ratio of the distances of a point to its two closest neighbors. For the precise formula, see \cite{lee2024}, section 3.
+                The TwoNN estimation (<a href="#facco">Facco et al.</a>) uses less neighborhood structure than all of the methods above; it only looks at the ratio of the distances of a point to its two closest neighbors. For the precise formula, see <a href="#lee">Lee et al.</a> Section 3.
               </p>
+              <br><br>
 
               <h4 class="title is-4">Comparison</h4>
               <p>
-                To compare the above methods (PCA, correlation dimension, TwoNN, and MLE), we sample some data (with added noise) from embedded manifolds with known ground-truth dimension. These manifolds are supplied in the \texttt{scikit-dimension} package. 
+                To compare the above methods (PCA, correlation dimension, TwoNN, and MLE), we sample some data (with added noise) from embedded manifolds with known ground-truth dimension. These manifolds are supplied in the <tt>scikit-dimension</tt> package. 
               </p>
               <p>
-                To evaluate each method, we consider the relative error which is defined as the absolute difference between the predicted ID and the ground-truth ID, divided by the ground-truth ID. We then take the average of this quantity over all the manifolds in the benchmark dataset. The results are summarized in table 1:
-                <table class="table is-centered">
+                To evaluate each method, we consider the relative error which is defined as the absolute difference between the predicted ID and the ground-truth ID, divided by the ground-truth ID. We then take the average of this quantity over all the manifolds in the benchmark dataset. The results are summarized in <a href="#table-1">Table 1</a>:
+                <br><br>
+                <table class="table is-centered" id="table-1">
                     <tr style="border-bottom: 2px solid black;">
                       <th>Method</th>
                       <th>Mean relative error</th>
@@ -270,13 +279,15 @@
                     </tr>
                   </tbody>
                 </table>
-                <p style="text-align: center;"><em>Table 2: Mean relative errors of ID estimation methods on benchmark.</em></p>
+                <p style="text-align: center;"><em>Table 1: Mean relative errors of ID estimation methods on benchmark.</em></p>
               </p>
+              <br>
               <p>
                 From this table, one might conclude that TwoNN and MLE are the most accurate. Indeed, most of the representation geometry literature chose to use either one of these two metrics. However, we want to highlight two points:
                 <ol>
-                  <li>Performance may vary greatly depending on the data regime. To show this, we separated the benchmark into where the ambient (extrinsic) dimension $D$ is less than 15 versus at least 15. We see (table 2) that MLE and TwoNN perform significantly worse, while CorrInt performs slightly better. In the real-world regime of a $10^1$-dimensional manifold highly nonlinearly embedded into a $10^3$-dimensional space, the results may still be different. Constructing a benchmark in this regime would be a important part of our future work.</li>
-                  <table class="table is-centered">
+                  <li>Performance may vary greatly depending on the data regime. To show this, we separated the benchmark into where the ambient (extrinsic) dimension $D$ is less than 15 versus at least 15. We see (in <a href="#table-2">Table 2</a>) that MLE and TwoNN perform significantly worse, while CorrInt performs slightly better. In the real-world regime of a $10^1$-dimensional manifold highly nonlinearly embedded into a $10^3$-dimensional space, the results may still be different. Constructing a benchmark in this regime would be a important part of our future work.</li>
+                  <br><br>
+                  <table class="table is-centered" id="table-2">
                     <tr style="border-bottom: 2px solid black;">
                       <th>Method</th>
                       <th>D < 15</th>
@@ -306,9 +317,63 @@
                     </tbody>
                   </table>
                   <p style="text-align: center;"><em>Table 2: Mean relative errors of ID estimation on different regimes.</em></p>
+                  <br>
 
-                  <li>Hyperparameter choice could greatly affect ID estimation. For example, all of the above methods could also be applied locally to each $k$-nearest-neighborhood and then taken the average. Varying $k$ will change the results drastically, as seen in figure 1.
-                    A further complication arises because the methods themselves have their own hyperparameters apart from $k$. Figure 2 shows how performance changes as the parameters $k_1,k_2$ are varied for the CorrInt estimator (X-axis is $k_1$ and Y-axis is $k_2$):
+                  <li>Hyperparameter choice could greatly affect ID estimation. For example, all of the above methods could also be applied locally to each $k$-nearest-neighborhood and then taken the average. Varying $k$ will change the results drastically, as seen in <a href="#figure-1">Figure 1</a>.
+                    <br><br><br>
+                    <div class="columns is-centered" id="figure-1">
+                      <div class="column is-10">
+                        <!-- First Row -->
+                        <div class="columns">
+                          <div class="column is-half">
+                            <figure class="image">
+                              <img src="static/images/corrint-m8.png" alt="CorrInt">
+                              <figcaption class="has-text-centered">CorrInt</figcaption>
+                            </figure>
+                          </div>
+                          <div class="column is-half">
+                            <figure class="image">
+                              <img src="static/images/lPCA-m8.png" alt="local PCA">
+                              <figcaption class="has-text-centered">local PCA</figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                        
+                        <!-- Second Row -->
+                        <div class="columns">
+                          <div class="column is-half">
+                            <figure class="image">
+                              <img src="static/images/mle-m8.png" alt="MLE">
+                              <figcaption class="has-text-centered">MLE</figcaption>
+                            </figure>
+                          </div>
+                          <div class="column is-half">
+                            <figure class="image">
+                              <img src="static/images/twonn-m8.png" alt="TwoNN">
+                              <figcaption class="has-text-centered">TwoNN</figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                        
+                        <p class="has-text-centered">
+                          <em>Figure 1: Performance of various methods with varying k applied to one benchmark manifold, a 12-dimensional manifold nonlinearly embedded in 72-dimensional space.</em>
+                        </p>
+                        <br>
+                      </div>
+                    </div>
+                    A further complication arises because the methods themselves have their own hyperparameters apart from $k$. <a href="#figure-2">Figure 2</a> shows how performance changes as the parameters $k_1,k_2$ are varied for the CorrInt estimator (X-axis is $k_1$ and Y-axis is $k_2$):
+                    <br><br>
+                    <div class="columns is-centered" id="figure-2">
+                      <div class="column is-half">
+                        <figure class="image">
+                          <img src="static/images/CorrInt.png" alt="CorrInt hyperparameters">
+                          <figcaption class="has-text-centered">
+                            <em>Figure 2: Mean relative error of CorrInt with different hyperparameters</em>
+                          </figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                    <br>
                   </li>
                 </ol>
                 As a consequence of these two points, we cannot conclude yet which method is definitively the best for realistic ID estimation. However, results in the subsequent sections may shed more light on this question.
@@ -323,22 +388,22 @@
 
 <br><br>
 
-<!-- Toy Dataset -->
+<!-- Invariance -->
 <section class="hero is-small is-light">
   <br><br>
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Toy Dataset: Shape, Color, & Location</h2>
+          <h2 class="title is-3">Invariance</h2>
             <br>
             <div class="content has-text-justified">
-              <h4 class="title is-4">Dataset</h4>
+              <h4 class="title is-4">Toy Dataset</h4>
               <p>
-                To investigate the use of intrinsic dimension on machine learning tasks, we start with the following toy dataset from Problem Set 4: as illustrated in <a href="#dataset-vis">Figure 1</a>, the dataset consists of images of one single object in the black background. The object has various colors, shape, and appears at different locations in the image. 
+                To verify the invariance property of ID on machine learning tasks, we experiments on the following dataset from Problem Set 4: as illustrated in <a href="#dataset-vis">Figure 3</a>, the dataset consists of images of one single object in the black background. The object has various colors, shape, and appears at different locations in the image. 
                 <br><br>
                 <img src="static/images/dataset_vis.png" alt="Dataset Visualization" style="max-width:100%;" id="dataset-vis">
-                <p style="text-align: center;"><em>Figure 1: Visualization of toy dataset.</em></p>
+                <p style="text-align: center;"><em>Figure 3: Visualization of toy dataset.</em></p>
               </p>
               <br><br>
 
@@ -349,26 +414,23 @@
               </p>
               <p>
                 After the model achieves near-perfectly performance, we take $f(x)$ to be the learned representation of image $x$, since from it the decoder reliably reconstructs $x$.
-                When we set the dimensionality of representation to be $64$, we use the <tt>CorrInt</tt> metric to get the intrinsic dimension $~4$. As a baseline, we compute the actual dimension of $7.5$. In the next section we will learn that the estimation of $4$ is more accurate than $7.5$.
               </p>
               <br><br>
 
               <h4 class="title is-4">Varying Dimension</h4>
               <p>
-                Since the representation learned is sometimes correlated with its dimensionality, we train the autoencoder on varying dimensions and compute their intrinsic dimensions over different metrics, as shown in <a href="#varying-dim">Figure 2</a>.
+                To test if ID has a strong dependence on the latent dimension, we train the autoencoder on varying dimensions and compute their ID over different metrics, as in <a href="#varying-dim">Figure 4</a>.
                 <br><br>
                 <div class="columns is-centered" id="varying-dim">
-                  <div class="column is-half">
-                    <img src="static/images/vary_dim.png" alt="Varying Dimensions Plot" style="width:100%;">
-                  </div>
-                  <div class="column is-half">
-                    <img src="static/images/perf_dim.png" alt="Performance vs Dimensions Plot" style="width:100%;">
+                  <div class="column">
+                    <img src="static/images/invariance.png" alt="Invariance Plot" style="width:100%;">
+                    <br><br>
+                    <p style="text-align: center;"><em>Figure 4: ID computed for varying dimension.</em></p>
                   </div>
                 </div>
-                <p style="text-align: center;"><em>Figure 2: Intrinsic dimension computed for varying dimension.</em></p>
                 <br>
                 <p>
-                  We can see that as the model performance convergence, so does intrinsic dimension but not for actual dimension. This again illustrates that intrinsic dimension helps when it comes to understanding the geometry of representation.
+                  We can see that as the model performance convergence, so does ID, indicating that for large enough latent space, the data manifold remains stable. On the other hand, the PCA dimension keeps increasing.
                 </p>
               </p>
             </div>
@@ -378,18 +440,18 @@
   </div>
   <br><br>
 </section>
-<!-- Toy Dataset -->
+<!-- Invariance -->
 
-<br><br>
 
-<!-- Toy Dataset: Representation Decomposition -->
+
+<!-- Additivity -->
 <section class="hero is-small">
   <br><br>
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Toy Dataset: Representation Decomposition</h2>
+          <h2 class="title is-3">Additivity</h2>
           <br>
             <div class="content has-text-justified">
               <p>
@@ -399,7 +461,7 @@
               
               <h4 class="title is-4">Dataset Augmentation</h4>
               <p>
-                We augmented the original dataset and constructed a custom contrastive learning dataset for each property (shape, color, and location). For each property, we generated 5,000 positive pairs and 5,000 pairs, where a positive pair shares the target property but has different values for other properties, and a negative pair differs only in the target property and shares other properties. For example, Figure [] below shows a positive pair and a negative pair for the location property. 
+                We augmented the original dataset and constructed a custom contrastive learning dataset for each property (shape, color, and location). For each property, we generated 5,000 positive pairs and 5,000 pairs, where a positive pair shares the target property but has different values for other properties, and a negative pair differs only in the target property and shares other properties. For example, <a href="#figure-5">Figure 5</a> below shows a positive pair and a negative pair for the location property. 
               </p>
               <br>
               <div class="columns is-centered">
@@ -410,10 +472,10 @@
                   <img src="static/images/location_negative_pair.png" alt="Location Negative Pair" style="width:100%;">
                 </div>
               </div>
-              <p style="text-align: center;"><em>Figure 3: Example of positive pair (left) & negative pair (right) for location property.</em></p>
+              <p style="text-align: center;"><em>Figure 5: Example of positive pair (left) & negative pair (right) for location property.</em></p>
               <br><br>
 
-              <h4 class="title is-4">Experiment Setup</h4>
+              <h4 class="title is-4">Autoencoder for Contrastive Learning</h4>
               <p>
                 For each property (shape, color, and location), we trained an encoder with <tt>latent_dim</tt> = 128 on its contrastive learning dataset. The contrastive loss we used is:
                 $$L \left(x_{1}, x_{2}, y\right) \, = \, y \cdot D^{2} \, + \, (1-y) \cdot \max{(\texttt{margin} - D, \, 0)}^{2},$$
@@ -426,41 +488,47 @@
 
               <h4 class="title is-4">Decomposition Results</h4>
               <p>
-                We show the results of estimating the intrinsic dimensions of shape, color, and location properties, using actual dimension (PCA explaining 95% variance), correlation dimension, TwoNN, and local PCA with <tt>alphaFO</tt> = 0.225.
+                We show the results of estimating the ID of shape, color, and location properties, using PCA (explaining 95% variance), CorrInt, MLE, TwoNN, and local PCA with <tt>alphaFO</tt> = 0.225.
                 <br><br>
                 <table>
-                  <tr>
+                  <tr style="border-bottom: 2px solid black;">
                     <th></th>
                     <th>Shape</th>
                     <th>Color</th>
                     <th>Location</th>
                   </tr>
                   <tr>
-                    <td><b>Actual</b></td>
+                    <td>PCA</td>
                     <td>11</td>
                     <td>13</td>
                     <td>11</td>
                   </tr>
                   <tr>
-                    <td><tt>CorrInt</tt></td>
+                    <td>CorrInt</td>
                     <td>2.37</td>
                     <td>0.86</td>
                     <td>1.50</td>
                   </tr>
                   <tr>
-                    <td><tt>TwoNN</tt></td>
+                    <td>MLE</td>
+                    <td>$\infty$</td>
+                    <td>$\infty$</td>
+                    <td>$\infty$</td>
+                  </tr>
+                  <tr>
+                    <td>TwoNN</td>
                     <td>4.17</td>
                     <td>2.66</td>
                     <td>1.85</td>
                   </tr>
                   <tr>
-                    <td><tt>Local PCA</tt></td>
+                    <td>LocalPCA</td>
                     <td>3</td>
                     <td>3</td>
                     <td>5</td>
                   </tr>
                 </table>
-                <p style="text-align: center;"><em>Table 1: Intrinsic dimension estimates for shape, color, & location using various metrics.</em></p>
+                <p style="text-align: center;"><em>Table 3: ID estimates for shape, color, & location using various metrics.</em></p>
                 <br>
                 The actual dimension (using PCA explaining 95% variance) assigns color a higher dimension than both shape and location, even though color is an easier concept to learn.
                 In contrast, <tt>CorrInt</tt> and <tt>TwoNN</tt> assign the highest dimension to shape and the lowest dimension to color, which corresponds to our observation that shape is harder to learn than the other two properties.
@@ -472,17 +540,18 @@
     </div>
   </div>
 </section>
-<!-- Toy Dataset: Representation Decomposition -->
+<!-- Additivity -->
 
 
 
-<!-- Real-World Dataset -->
+<!-- Semanticity -->
 <section class="hero is-small is-light">
+  <br><br>
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Real-World Dataset</h2>
+          <h2 class="title is-3">Semanticity</h2>
             <div class="content has-text-justified">
               <p>
                 
@@ -492,44 +561,55 @@
     </div>
   </div>
 </section>
-<!-- Real-World Dataset -->
+<!-- Semanticity -->
 
 <!-- References -->
 <section class="section" id="references">
+  <br>
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">References</h2>
+        <br>
         <div class="content has-text-justified">
           <ol class="references">
             <li id="carlsson">
-              Carlsson, G., Ishkhanov, T., De Silva, V., & Zomorodian, A. (2008). 
-              On the local behavior of spaces of natural images. 
-              <em>International Journal of Computer Vision</em>, 76(1), 1-12.
+              Gunnar Carlsson et al. “On the local behavior of spaces of natural images”. In: Int. J. Comput. Vis. 76.1 (2008), pp. 1–12. issn: 0920-5691,1573-1405. doi: 10.1007/s11263- 007- 0056- x. url:
+              <a href="https://doi.org/10.1007/s11263-007-0056-x">https://doi.org/10.1007/s11263-007-0056-x</a>.
             </li>
 
-            <li id="fefferman2013">
-              Fefferman, C., Mitter, S., & Narayanan, H. (2013). 
-              Testing the manifold hypothesis. 
-              <em>Journal of the American Mathematical Society</em>, 29(4), 983-1049.
+            <li id="facco">
+              Elena Facco et al. “Estimating the intrinsic dimension of datasets by a minimal neighborhood infor-
+              <a href="https://doi.org/10.1038/s41598-017-11873-y">https://doi.org/10.1038/s41598-017-11873-y</a>.
             </li>
 
-            <li id="pope2021">
-              Pope, P., Zhu, C., Murri, A., Ablin, P., Larochelle, H., & Krzakala, F. (2021).
-              The intrinsic dimension of images and its impact on learning.
-              <em>International Conference on Learning Representations</em>.
+            <li id="fefferman">
+              Charles Fefferman, Sanjoy Mitter, and Hariharan Narayanan. Testing the Manifold Hypothesis. 2013. arXiv: 1310.0425 [math.ST]. url: <a href="https://arxiv.org/abs/1310.0425">https://arxiv.org/abs/1310.0425</a>.
             </li>
 
-            <li id="lee2024">
-              Lee, J., Schaeffer, R., Linderman, S., & Pennington, J. (2024).
-              Intrinsic dimension estimation for robust detection of AI-generated text.
-              <em>arXiv preprint arXiv:2402.03075</em>.
+            <li id="grassberger">
+              Peter Grassberger and Itamar Procaccia. “Measuring the strangeness of strange attractors”. In:
+              Physica D: Nonlinear Phenomena 9.1 (1983), pp. 189–208. issn: 0167-2789. doi: <a href="https://doi.org/10.1016/0167-2789(83)90298-1">https://doi.org/10.1016/0167-2789(83)90298-1</a>. url: <a href="https://www.sciencedirect.com/science/article/pii/0167278983902981">https://www.sciencedirect.com/science/article/pii/0167278983902981</a>.
+            </li>
+
+            <li id="kaiming">
+              Kaiming He et al. Masked Autoencoders Are Scalable Vision Learners. arXiv:2111.06377. Dec. 2021.
+              doi: 10 . 48550 / arXiv . 2111 . 06377. url: <a href="https://arxiv.org/abs/2111.06377">https://arxiv.org/abs/2111.06377</a>.
+            </li>
+
+            <li id="lee">
+              Jin Hwa Lee et al. Geometric Signatures of Compositionality Across a Language Model’s Lifetime. 2024. arXiv: 2410.01444 [cs.CL]. url: <a href="https://arxiv.org/abs/2410.01444">https://arxiv.org/abs/2410.01444</a>.
+            </li>
+
+            <li id="pope">
+              Phillip Pope et al. The Intrinsic Dimension of Images and Its Impact on Learning. 2021. arXiv: 2104.08894 [cs.CV]. <a href="https://arxiv.org/abs/2104.08894">https://arxiv.org/abs/2104.08894</a>.
             </li>
           </ol>
         </div>
       </div>
     </div>
   </div>
+  <br>
 </section>
 
 
