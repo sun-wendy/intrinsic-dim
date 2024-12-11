@@ -155,9 +155,7 @@
                 the data manifold, the ID should not depend on the latent space dimension
                 as long as it is large enough.</li>
                 
-                <li><strong>Additivity:</strong> Suppose that locally the given data manifold can be decomposed
-                into several subspaces whose direct sum is the full manifold, then the ID
-                along those subspaces should sum to the ID of the full manifold.</li>
+                <li><strong>Additivity:</strong> suppose that locally the given data manifold can be decomposed into several subspaces whose direct sum is the full manifold, then the ID along those subspaces should sum to the ID of the full manifold. Furthermore, subspaces with larger dimensions should be harder for models to learn.</li>
                 
                 <li><strong>Semanticity:</strong> The ID of the data manifold should encode the amount
                 of semantic complexity of the data (see Section 2 for more discussion).</li>
@@ -193,7 +191,7 @@
                 There has been a lot of established work providing evidence for the manifold hypothesis for images (e.g. <a href="#carlsson">Carlsson et al.</a>, <a href="#fefferman">Fefferman et al.</a>, and see references in <a href="#pope">Pope et al.</a>) and we will not focus on them. Rather, we will briefly discuss two recent works in the context of representation geometry of deep neural networks.
               </p>
               <p>
-                In <a href="#pope">Pope et al.</a>, Pope et.~al. measured the ID of popular datasets such as CIFAR-10 and ImageNet. They found the ID of these datasets to be on the order of $10^1$ — for example ImageNet has ID around 40, confirming the manifold hypothesis. Their methods used the Maximum Likelihood Estimate (MLE) method, which is described in their Section 3. Their choice to use MLE instead of other ID estimation methods was based on some experiments on data sampled from hypercubes, data from the <tt>basenji10</tt> dataset, as well as real-world data from MNIST and CIFAR-10. However, we note that their MLE estimates depend strongly on the neighborhood parameter $k$ (see Figure 1 of <a href="#pope">Pope et al.</a>).
+                In <a href="#pope">Pope et al.</a>, the authors measured the ID of popular datasets such as CIFAR-10 and ImageNet. They found the ID of these datasets to be on the order of $10^1$ — for example ImageNet has ID around 40, confirming the manifold hypothesis. Their methods used the Maximum Likelihood Estimate (MLE) method, which is described in their Section 3. Their choice to use MLE instead of other ID estimation methods was based on some experiments on data sampled from hypercubes, data from the <tt>basenji10</tt> dataset, as well as real-world data from MNIST and CIFAR-10. However, we note that their MLE estimates depend strongly on the neighborhood parameter $k$ (see Figure 1 of <a href="#pope">Pope et al.</a>). In addition, we note that hypercubes are not representative of how real-world data is represented in models, and we believe that further work is needed to conclusively compare these ID estimation methods. This is discussed in our Section 3.
               </p>
               <p>
                 Another finding by <a href="#pope">Pope et al.</a> is that the higher the ID of a dataset is, the more examples are needed for the model to learn it. In Section 5, we present some further evidence for the hypothesis that concepts with higher ID are harder to learn. We remark that <a href="#pope">Pope et al.</a> also noted that this trend is not true with ID replaced by the latent dimension, which is evidence for property (1), i.e., invariance.
@@ -401,6 +399,8 @@
               <p>
                 In this section, we test the invariance property of ID on machine learning tasks. We experiment on a toy dataset and train an autoencoder for reconstruction. We then vary the latent dimension and compute the ID over different metrics.
               </p>
+              <br><br>
+
               <h4 class="title is-4">Toy Dataset</h4>
               <p>
                 We borrow the toy dataset from Problem Set 4: as illustrated in <a href="#dataset-vis">Figure 3</a>, the dataset consists of images of one single object in the black background. The object has various colors, shape, and appears at different locations in the image. We choose the dataset because it is simple and allows us to speculate the intrinsic dimensionality of the data manifold: assumpting that the color, shape, and location attributes are independent of each other, we hypothesize that the representation of images in the dataset dedicates different dimensions to these three attributes. We will further test this hypothesis in the next section.
@@ -533,7 +533,7 @@
                 </table>
                 <p style="text-align: center;"><em>Table 3: ID estimates for shape, color, & location using various metrics.</em></p>
                 <br>
-                We observe that the PCA metric assigns a high ID to each property, which is expected as PCA is not a good estimator for nonlinearly embedded manifolds. On the other hand, CorrInt and TwoNN metrics assign a lower ID to each property, with CorrInt especially close to our hypothese (2.37 + 0.86 + 1.50 = 4.73 ~ 4, as computed in the previous section). This verifies the additivity property of ID.
+                We observe that the PCA metric assigns a high ID to each property, which is expected as PCA is not a good estimator for nonlinearly embedded manifolds. On the other hand, CorrInt and TwoNN metrics assign a lower ID to each property, with CorrInt especially close to our hypothese (2.37 + 0.86 + 1.50 = 4.73 ~ 4, as computed in the previous section). This supports the additivity property of ID.
               </p>
               <br><br>
             </div>
@@ -554,20 +554,109 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <h2 class="title is-3">Property 3: Semanticity</h2>
+            <br>
             <div class="content has-text-justified">
               <p>
-                In <a href="#kaiming">Kaiming He et al.</a>, the authors introduced masked autoencoder (MAE), which consists of a vision transformer (ViT) encoder, a linear projection layer, then a decoder. The encoder takes an input image and cuts it into $16\times 16$ non-overlapping patches, and embeds each of the batches separately but with attention. The MAE is trained by masking some of these patches and asking the decoder to recover the hidden patches. Therefore, the individual patch embeddings would need to contain information about the whole image.
+                In <a href="#kaiming">He et al.</a>, the authors introduced masked autoencoder (MAE), which consists of a vision transformer (ViT) encoder, a linear projection layer, then a decoder. The encoder takes an input image and cuts it into $16\times 16$ non-overlapping patches, and embeds each of the batches separately but with attention. The MAE is trained by masking some of these patches and asking the decoder to recover the hidden patches. Therefore, the individual patch embeddings would need to contain information about the whole image.
               </p>
               <p>
                 In this section, we test the semanticity hypothesis with the following experimental setup using a pretrained MAE. We pass in images from the Imagenette dataset, which just consists of 10 distinct classes of Imagenet. For a given class, we take the latent representations of each patch of each image right after the linear projection layer. We vary three paramaters: the image class, the masking ratio, and whether or not the image is shuffled. By shuffling, we mean the process of randomly permuting the relative locations of each patch in a given image. This process should reduce the semantic complexity of the image while maintaining its formal complexity. Therefore, if the semanticity assumption were true, then the ID of shuffled images should be lower than that of unshuffled images, while the linear dimension should remain roughly the same; similarly, the ID of images with higher masked percentage should be lower than that of lower masked percentage, and the linear dimension should also be lower.
               </p>
+              <p>
+                <a href="#figure-6">Figure 6</a> shows the results of shuffled vs non-shuffled images, for masking ratios ranging in $[0, 0.25, 0.5, 0.75, 0.9]$. <a href="#figure-7">Figure 7</a> shows the results of varying masking ratios (all for non-shuffled images). We find that the ID of images do not change by much after shuffling, even increasing slightly according to some measures, contrary to what we expected. Also, the ID of images tend to increase as masking ratio increases.
+              </p>
+              <br><br>
+              <div class="columns is-centered" id="figure-6">
+                <div class="column is-10">
+                  <!-- First Row -->
+                  <div class="columns">
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/GPCA-shuffle.png" alt="PCA">
+                        <figcaption class="has-text-centered">PCA</figcaption>
+                      </figure>
+                    </div>
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/CorrInt-shuffl.png" alt="CorrInt">
+                        <figcaption class="has-text-centered">CorrInt</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                  
+                  <!-- Second Row -->
+                  <div class="columns">
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/MLE-shuffle.png" alt="MLE">
+                        <figcaption class="has-text-centered">MLE</figcaption>
+                      </figure>
+                    </div>
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/TwoNN-shuffle.png" alt="TwoNN">
+                        <figcaption class="has-text-centered">TwoNN</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                  
+                  <p class="has-text-centered">
+                    <em>Figure 6: Comparison of ID metrics on shuffled vs unshuffled images.</em>
+                  </p>
+                </div>
+              </div>
+
+              <br><br>
+
+              <div class="columns is-centered" id="figure-7">
+                <div class="column is-10">
+                  <!-- First Row -->
+                  <div class="columns">
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/GPCA-mask.png" alt="PCA">
+                        <figcaption class="has-text-centered">PCA</figcaption>
+                      </figure>
+                    </div>
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/CorrInt-mask.png" alt="CorrInt">
+                        <figcaption class="has-text-centered">CorrInt</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                  
+                  <!-- Second Row -->
+                  <div class="columns">
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/MLE-mask.png" alt="MLE">
+                        <figcaption class="has-text-centered">MLE</figcaption>
+                      </figure>
+                    </div>
+                    <div class="column is-half">
+                      <figure class="image">
+                        <img src="static/images/TwoNN-mask.png" alt="TwoNN">
+                        <figcaption class="has-text-centered">TwoNN</figcaption>
+                      </figure>
+                    </div>
+                  </div>
+                  
+                  <p class="has-text-centered">
+                    <em>Figure 7: Comparison of ID metrics with varying masking ratios.</em>
+                  </p>
+                </div>
+              </div>
             </div>
         </div>
       </div>
     </div>
   </div>
+  <br><br>
 </section>
 <!-- Semanticity -->
+
+
 
 <!-- References -->
 <section class="section" id="references">
@@ -576,7 +665,6 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">References</h2>
-        <br>
         <div class="content has-text-justified">
           <ol class="references">
             <li id="carlsson">
